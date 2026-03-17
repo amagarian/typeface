@@ -200,8 +200,8 @@ function setupPreview() {
 
     row.addEventListener("mousemove", (e) => {
       if (!src) return;
-      const x = Math.min(e.clientX + 28, window.innerWidth  - 340);
-      const y = Math.min(e.clientY - 80,  window.innerHeight - 220);
+      const x = Math.min(e.clientX + 28, window.innerWidth - 320);
+      const y = Math.min(e.clientY - 80, window.innerHeight - preview.offsetHeight - 20);
       preview.style.transform = `translate(${x}px, ${y}px)`;
     });
 

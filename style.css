@@ -297,22 +297,20 @@ ul { list-style: none; }
 
 .img-float {
   position: fixed;
-  width: 320px;
-  aspect-ratio: 16/10;
+  width: 300px;
   top: 0; left: 0;
   pointer-events: none;
   z-index: 200;
   opacity: 0;
   transition: opacity 0.2s ease;
-  overflow: hidden;
   border: 1px solid var(--rule-md);
 }
 
 .img-float.on { opacity: 1; }
 
 .img-float img {
-  width: 100%; height: 100%;
-  object-fit: cover;
+  width: 100%;
+  height: auto;
   display: block;
 }
 
