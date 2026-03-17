@@ -6,8 +6,9 @@ const SANITY_API_URL    = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2024-01-0
 async function fetchProjects() {
   const query = encodeURIComponent(
     `*[_type == "project" && "typeface" in sites] | order(order asc) {
-      title, year, category,
-      "imageUrl": image.asset->url
+      title, year, category, videoUrl,
+      "imageUrl": image.asset->url,
+      "galleryUrls": gallery[].asset->url
     }`
   );
   const res  = await fetch(`${SANITY_API_URL}?query=${query}`);
@@ -89,6 +90,7 @@ let currentFilter = "all";
 async function init() {
   setupLogo();
   setEdition();
+  setupOverlay();
 
   // Fetch from Sanity, fall back to hardcoded if offline
   let data;
@@ -112,8 +114,8 @@ function buildList(data) {
   ul.innerHTML = "";
 
   data.forEach((p) => {
-    const tf  = p.tf || "tf-cormorant";
-    const img = p.imageUrl  || "";
+    const tf  = p.tf || "tf-garamond";
+    const img = p.imageUrl || "";
 
     const li = document.createElement("li");
     li.className = "title-row";
@@ -127,6 +129,7 @@ function buildList(data) {
       ${img ? `<div class="title-row-bg"><img src="${img}" alt="" loading="lazy"></div>` : ""}
     `;
 
+    li.addEventListener("click", () => openProject(p));
     ul.appendChild(li);
   });
 }
@@ -249,6 +252,79 @@ function setEdition() {
   if (!el) return;
   const days = Math.floor((Date.now() - new Date("2021-01-01")) / 86400000);
   el.textContent = String(days).padStart(4, "0");
+}
+
+/* ── Project overlay ── */
+function getYouTubeId(url) {
+  if (!url) return null;
+  const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
+  return m?.[1] || null;
+}
+
+function openProject(p) {
+  const overlay  = document.getElementById("project-overlay");
+  const titleEl  = overlay.querySelector(".ov-title");
+  const yearEl   = overlay.querySelector(".ov-year");
+  const catEl    = overlay.querySelector(".ov-cat");
+  const body     = overlay.querySelector(".ov-body");
+
+  titleEl.textContent = p.title;
+  titleEl.className   = `ov-title ${p.tf || ""}`;
+  yearEl.textContent  = p.year;
+  catEl.textContent   = p.category;
+
+  body.innerHTML = "";
+
+  const ytId    = getYouTubeId(p.videoUrl);
+  const gallery = p.galleryUrls?.filter(Boolean) || [];
+
+  if (ytId) {
+    const wrap = document.createElement("div");
+    wrap.className = "ov-video";
+    wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
+    body.appendChild(wrap);
+  } else if (gallery.length) {
+    const grid = document.createElement("div");
+    grid.className = "ov-gallery";
+    gallery.forEach(url => {
+      const img = document.createElement("img");
+      img.src     = url;
+      img.loading = "lazy";
+      grid.appendChild(img);
+    });
+    body.appendChild(grid);
+  } else if (p.imageUrl) {
+    const wrap = document.createElement("div");
+    wrap.className = "ov-single";
+    wrap.innerHTML = `<img src="${p.imageUrl}" alt="${p.title}">`;
+    body.appendChild(wrap);
+  } else {
+    body.innerHTML = `<p class="ov-empty">No media available.</p>`;
+  }
+
+  overlay.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+
+function closeProject() {
+  const overlay = document.getElementById("project-overlay");
+  overlay.classList.remove("open");
+  document.body.style.overflow = "";
+  // Kill any playing video
+  const iframe = overlay.querySelector("iframe");
+  if (iframe) iframe.src = "";
+}
+
+function setupOverlay() {
+  const overlay = document.getElementById("project-overlay");
+  const closeBtn = document.getElementById("ov-close");
+  closeBtn.addEventListener("click", closeProject);
+  overlay.addEventListener("click", (e) => {
+    if (e.target === overlay) closeProject();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeProject();
+  });
 }
 
 document.addEventListener("DOMContentLoaded", init);
