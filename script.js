@@ -40,23 +40,23 @@ const FONTS = [
   { family: "Playfair Display",   weight: "400", style: "italic"  },
 ];
 
-/* ── Fallback project data (used if Sanity fetch fails) ── */
+/* ── Fallback project data (used if Sanity is unreachable) ── */
 const projects = [
-  { year: "2024", title: "Lil Dicky — Hahaha",                            category: "MUSIC VIDEO",  image: "images/01-lil-dicky-hahaha.jpg" },
-  { year: "2025", title: "Sabrina Carpenter — Mans Best Friend",           category: "PHOTO",        image: "images/02-sabrina-carpenter-mans-best-friend.webp" },
-  { year: "2025", title: "Adela — Sex on the Beat",                        category: "MUSIC VIDEO",  image: "images/03-adela-sex-on-the-beat.png" },
-  { year: "2025", title: "Open x Beats — Power Beats Pro 2",               category: "COMMERCIAL",   image: null },
-  { year: "2024", title: "Coin — Take It or Leave It",                     category: "MUSIC VIDEO",  image: "images/05-coin-take-it-or-leave-it.jpg" },
-  { year: "2023", title: "Charlie Puth — Thats Not How This Works",        category: "MUSIC VIDEO",  image: "images/06-charlie-puth.png" },
-  { year: "2024", title: "Tate McRae — So Close to What (Album Teaser)",  category: "MUSIC VIDEO",  image: null },
-  { year: "2024", title: "Sabrina Carpenter — Short & Sweet Press Stills", category: "PHOTO",        image: "images/08-sabrina-carpenter-short-sweet.jpg" },
-  { year: "2025", title: "Halsey — So Good",                               category: "MUSIC VIDEO",  image: null },
-  { year: "2025", title: "Mercedes — Energizing Comfort",                  category: "COMMERCIAL",   image: null },
-  { year: "2025", title: "Sans Gêne — Pre-Fall 2022 Campaign",             category: "COMMERCIAL",   image: null },
-  { year: "2025", title: "Olivia Obrien — Olivia Obrien",                  category: "PHOTO",        image: "images/12-olivia-obrien.jpg" },
-  { year: "2022", title: "Sabrina Carpenter — Fast Times",                 category: "MUSIC VIDEO",  image: "images/13-sabrina-carpenter-fast-times.jpg" },
-  { year: "2024", title: "Tate McRae — So Close to What",                  category: "MUSIC VIDEO",  image: "images/14-tate-mcrae-so-close.jpg" },
-  { year: "2021", title: "Spring Summer 2021 — Tatras",                    category: "PHOTO",        image: "images/15-tatras-spring-summer.jpg" },
+  { year: 2024, title: "Lil Dicky — Hahaha",                            category: "MUSIC VIDEO"  },
+  { year: 2025, title: "Sabrina Carpenter — Mans Best Friend",           category: "PHOTO"        },
+  { year: 2025, title: "Adela — Sex on the Beat",                        category: "MUSIC VIDEO"  },
+  { year: 2025, title: "Open x Beats — Power Beats Pro 2",               category: "COMMERCIAL"   },
+  { year: 2024, title: "Coin — Take It or Leave It",                     category: "MUSIC VIDEO"  },
+  { year: 2023, title: "Charlie Puth — Thats Not How This Works",        category: "MUSIC VIDEO"  },
+  { year: 2024, title: "Tate McRae — So Close to What (Album Teaser)",   category: "MUSIC VIDEO"  },
+  { year: 2024, title: "Sabrina Carpenter — Short & Sweet Press Stills", category: "PHOTO"        },
+  { year: 2025, title: "Halsey — So Good",                               category: "MUSIC VIDEO"  },
+  { year: 2025, title: "Mercedes — Energizing Comfort",                  category: "COMMERCIAL"   },
+  { year: 2025, title: "Sans Gêne — Pre-Fall 2022 Campaign",             category: "COMMERCIAL"   },
+  { year: 2025, title: "Olivia Obrien — Olivia Obrien",                  category: "PHOTO"        },
+  { year: 2022, title: "Sabrina Carpenter — Fast Times",                 category: "MUSIC VIDEO"  },
+  { year: 2024, title: "Tate McRae — So Close to What",                  category: "MUSIC VIDEO"  },
+  { year: 2021, title: "Spring Summer 2021 — Tatras",                    category: "PHOTO"        },
 ];
 
 /* ── Type style classes — one per historical typeface era ── */
