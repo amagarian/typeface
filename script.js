@@ -154,6 +154,11 @@ function buildList(data) {
       ${img ? `<div class="title-row-bg"><img src="${img}" alt="" loading="lazy"></div>` : ""}
     `;
 
+    // On touch devices, open immediately on first tap (skip hover state)
+    li.addEventListener("touchend", (e) => {
+      e.preventDefault();
+      openProject(p, li);
+    });
     li.addEventListener("click", () => openProject(p, li));
     ul.appendChild(li);
   });
