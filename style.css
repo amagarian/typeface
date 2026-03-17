@@ -85,6 +85,7 @@ ul { list-style: none; }
   color: var(--faint);
   text-decoration: none;
   transition: color 0.15s;
+  margin-left: auto;
 }
 
 .contact-link:hover { color: var(--ink); }
@@ -549,8 +550,9 @@ ul { list-style: none; }
 
   .img-float { display: none; }
 
-  .colophon { flex-direction: row; flex-wrap: nowrap; padding: 1rem 1.25rem; justify-content: space-between; }
+  .colophon { flex-direction: column; flex-wrap: nowrap; padding: 1rem 1.25rem; align-items: center; gap: 0.5rem; }
   .col-fontlist { display: none; }
+  .contact-link { margin-left: 0; }
 
   .ov-panel { inset: 0; }
   .ov-header { grid-template-columns: 1fr auto; gap: 0.75rem; padding: 0.75rem 1.25rem; }
