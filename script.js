@@ -104,7 +104,7 @@ function buildList(data) {
   ul.innerHTML = "";
 
   data.forEach((p) => {
-    const tf  = p.typeStyle || "tf-cormorant";
+    const tf  = p.tf || "tf-cormorant";
     const img = p.imageUrl  || "";
 
     const li = document.createElement("li");
