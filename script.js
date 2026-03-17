@@ -71,6 +71,22 @@ const TYPE_STYLES = [
   "tf-courier",         // Courier 1955 — press typewriter
 ];
 
+// Maps a TYPE_STYLES class to its display name (for the colophon)
+const STYLE_LABEL = {
+  "tf-garamond":        "Garamond",
+  "tf-garamond-bold":   "Garamond",
+  "tf-baskerville":     "Baskerville",
+  "tf-baskerville-bold":"Baskerville",
+  "tf-bodoni":          "Bodoni",
+  "tf-bodoni-heavy":    "Bodoni",
+  "tf-playfair":        "Playfair",
+  "tf-franklin":        "Franklin Gothic",
+  "tf-franklin-light":  "Franklin Gothic",
+  "tf-news-cycle":      "News Cycle",
+  "tf-oswald":          "Oswald",
+  "tf-courier":         "Courier",
+};
+
 function assignTypeStyles(data) {
   // Shuffle a copy of the styles so no two adjacent rows share a family
   const shuffled = [...TYPE_STYLES].sort(() => Math.random() - 0.5);
@@ -104,14 +120,26 @@ async function init() {
   window.addEventListener("resize", fitAllTitles);
 }
 
+/* ── Update colophon font list based on styles actually in use ── */
+function updateColophon(usedStyles) {
+  const el = document.querySelector(".col-fontlist");
+  if (!el) return;
+  const names = [...new Set(usedStyles.map(s => STYLE_LABEL[s]).filter(Boolean))];
+  el.textContent = `Set in ${names.join(", ")}`;
+}
+
 /* ── Build list from Sanity data ── */
 function buildList(data) {
   const ul = document.getElementById("title-list");
   ul.innerHTML = "";
 
+  const usedStyles = [];
+
   data.forEach((p) => {
     const tf  = p.tf || "tf-garamond";
     const img = p.imageUrl || "";
+
+    usedStyles.push(tf);
 
     const li = document.createElement("li");
     li.className = "title-row";
@@ -129,6 +157,8 @@ function buildList(data) {
     li.addEventListener("click", () => openProject(p, li));
     ul.appendChild(li);
   });
+
+  updateColophon(usedStyles);
 }
 
 /* ── Scale each title to fill its column exactly ── */
