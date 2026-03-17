@@ -506,19 +506,22 @@ ul { list-style: none; }
 
 /* Photo gallery — allow scrolling from top */
 .ov-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: flex-start;
+  gap: 0.75rem;
   width: 100%;
-  max-width: 900px;
-  columns: 2;
-  column-gap: 0.75rem;
-  margin: 0 auto;
+  max-width: 960px;
   align-self: flex-start;
 }
 
 .ov-gallery img {
-  width: 100%;
+  width: calc(50% - 0.375rem);
+  max-width: 480px;
+  height: auto;
   display: block;
-  margin-bottom: 0.75rem;
-  break-inside: avoid;
+  object-fit: cover;
 }
 
 /* Single fallback image — centered, constrained to viewport */
