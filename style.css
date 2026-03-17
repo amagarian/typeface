@@ -466,22 +466,16 @@ ul { list-style: none; }
   overflow: hidden;
   opacity: 0.055;
   transform: scaleX(-1);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 2rem 1.75rem;
   z-index: 0;
 }
 
-.ov-ghost .tr-title {
-  display: block;
-  white-space: nowrap;
-  line-height: 1.15;
+/* The cloned ul sits at the top, same as the real page */
+.ov-ghost .title-list {
+  margin: 0;
+  padding: 0;
 }
 
-.ov-ghost .title-row-bg,
-.ov-ghost .tr-year,
-.ov-ghost .tr-cat { display: none; }
+.ov-ghost .title-row-bg { display: none; }
 
 /* Overlay body */
 .ov-body {

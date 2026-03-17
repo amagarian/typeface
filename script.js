@@ -306,10 +306,13 @@ function openProject(p, rowEl) {
 
   lastRowRect = rowEl.getBoundingClientRect();
 
-  // Populate ink bleed-through ghost with current title list
+  // Populate ink bleed-through ghost — clone the full ul so CSS grid layout is preserved
   const ghost = overlay.querySelector(".ov-ghost");
   const list  = document.getElementById("title-list");
-  if (ghost && list) ghost.innerHTML = list.innerHTML;
+  if (ghost && list) {
+    ghost.innerHTML = "";
+    ghost.appendChild(list.cloneNode(true));
+  }
 
   titleEl.textContent = p.title;
   titleEl.className   = `ov-title ${p.tf || ""}`;
