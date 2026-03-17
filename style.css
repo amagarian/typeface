@@ -1,0 +1,349 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg:       #ebe7dc;
+  --ink:      #0d0b08;
+  --dim:      #7a7570;
+  --faint:    #b8b3ab;
+  --rule:     rgba(13, 11, 8, 0.1);
+  --rule-md:  rgba(13, 11, 8, 0.16);
+  --mono:     'DM Mono', ui-monospace, monospace;
+  --serif:    'Cormorant Garamond', Georgia, serif;
+  --ease:     cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+html { font-size: 16px; }
+
+body {
+  font-family: var(--mono);
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--ink); color: var(--bg); }
+
+a { color: inherit; text-decoration: none; }
+button { background: none; border: none; cursor: pointer; color: inherit; font-family: inherit; }
+ul { list-style: none; }
+
+/* ══════════════════════════════════
+   HEADER
+   ══════════════════════════════════ */
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--bg);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  padding: 0.9rem 1.75rem;
+  border-bottom: 1px solid var(--rule-md);
+}
+
+/* Logo */
+.logo {
+  display: inline-flex;
+  gap: 0;
+  cursor: crosshair;
+  user-select: none;
+}
+
+.logo-l {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  display: inline-block;
+  transition: font-weight 0.1s ease, font-style 0.1s ease;
+  line-height: 1;
+}
+
+/* Center meta */
+.header-center {
+  text-align: center;
+}
+
+.header-tag {
+  font-family: var(--mono);
+  font-size: 0.42rem;
+  letter-spacing: 0.18em;
+  color: var(--faint);
+  text-transform: uppercase;
+}
+
+/* Filters */
+.filter-nav {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.45rem;
+}
+
+.filter {
+  font-family: var(--mono);
+  font-size: 0.52rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding-bottom: 1px;
+  border-bottom: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.filter:hover { color: var(--dim); }
+
+.filter.active {
+  color: var(--ink);
+  border-bottom-color: var(--ink);
+}
+
+.fsep {
+  font-size: 0.5rem;
+  color: var(--faint);
+  opacity: 0.5;
+}
+
+
+/* ══════════════════════════════════
+   FULL-WIDTH TITLE LIST
+   ══════════════════════════════════ */
+
+.title-list {
+  width: 100%;
+}
+
+/* Each row */
+.title-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 64px 1fr 100px;
+  align-items: center;
+  padding: 0 1.75rem;
+  border-bottom: 1px solid var(--rule);
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 0.25s ease;
+}
+
+.title-row.filtered-out {
+  opacity: 0.1;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+
+.title-row.filtered-in {
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+/* Background image on hover */
+.title-row-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.title-row-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.title-row:hover .title-row-bg {
+  opacity: 0.09;
+}
+
+/* Left meta: year */
+.tr-year {
+  font-family: var(--mono);
+  font-size: 0.48rem;
+  letter-spacing: 0.12em;
+  color: var(--faint);
+  z-index: 1;
+  transition: color 0.2s ease;
+}
+
+.title-row:hover .tr-year {
+  color: var(--dim);
+}
+
+/* The actual title — scaled by JS to fill center column */
+.tr-title {
+  display: block;
+  white-space: nowrap;
+  line-height: 1;
+  padding: 0.55rem 0;
+  z-index: 1;
+  transition: opacity 0.2s ease;
+  will-change: font-size;
+}
+
+/* Right meta: category */
+.tr-cat {
+  font-family: var(--mono);
+  font-size: 0.45rem;
+  letter-spacing: 0.12em;
+  color: var(--faint);
+  text-align: right;
+  text-transform: uppercase;
+  z-index: 1;
+  transition: color 0.2s ease;
+}
+
+.title-row:hover .tr-cat {
+  color: var(--dim);
+}
+
+/* ── Type styles per project ── */
+
+.tf-cormorant {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.tf-bodoni {
+  font-family: 'Bodoni Moda', serif;
+  font-weight: 700;
+}
+
+.tf-oswald {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 200;
+  letter-spacing: 0.04em;
+}
+
+.tf-bebas {
+  font-family: 'Bebas Neue', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+
+.tf-inter-thin {
+  font-family: 'Inter', sans-serif;
+  font-weight: 100;
+  letter-spacing: -0.03em;
+}
+
+.tf-inter-black {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+}
+
+.tf-syne {
+  font-family: 'Syne', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.tf-playfair {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.tf-unbounded {
+  font-family: 'Unbounded', sans-serif;
+  font-weight: 200;
+  letter-spacing: 0.01em;
+}
+
+.tf-darker {
+  font-family: 'Darker Grotesque', sans-serif;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+/* ══════════════════════════════════
+   FLOATING IMAGE PREVIEW
+   ══════════════════════════════════ */
+
+.img-float {
+  position: fixed;
+  width: 320px;
+  aspect-ratio: 16/10;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  overflow: hidden;
+  border: 1px solid var(--rule-md);
+}
+
+.img-float.on { opacity: 1; }
+
+.img-float img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ══════════════════════════════════
+   COLOPHON
+   ══════════════════════════════════ */
+
+.colophon {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.1rem 1.75rem;
+  border-top: 1px solid var(--rule);
+}
+
+.col-text {
+  font-family: var(--mono);
+  font-size: 0.42rem;
+  letter-spacing: 0.18em;
+  color: var(--faint);
+  text-transform: uppercase;
+}
+
+.col-orn {
+  font-size: 0.3rem;
+  color: var(--faint);
+  opacity: 0.45;
+}
+
+/* ══════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════ */
+
+@media (max-width: 700px) {
+  .header {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+  }
+
+  .header-center { display: none; }
+
+  .intro-strip { padding: 2rem 1.25rem; }
+
+  .title-row {
+    grid-template-columns: 48px 1fr;
+    padding: 0 1.25rem;
+  }
+
+  .tr-cat { display: none; }
+
+  .img-float { display: none; }
+
+  .colophon { flex-direction: column; align-items: flex-start; padding: 1rem 1.25rem; }
+}

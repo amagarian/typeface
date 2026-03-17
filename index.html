@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typeface_ Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Bodoni+Moda:opsz,ital,wght@6..96,0,400;6..96,0,700;6..96,1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=DM+Mono:wght@300;400&family=Darker+Grotesque:wght@300;700;900&family=Instrument+Serif:ital@0;1&family=Inter:wght@100;300;400;500;700;900&family=Oswald:wght@200;300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;700&family=Space+Mono&family=Syne:wght@400;700;800&family=Unbounded:wght@200;400;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="header">
+    <span class="logo" id="logo" aria-label="TYPEFACE">
+      <span class="logo-l">T</span><span
+      class="logo-l">Y</span><span
+      class="logo-l">P</span><span
+      class="logo-l">E</span><span
+      class="logo-l">F</span><span
+      class="logo-l">A</span><span
+      class="logo-l">C</span><span
+      class="logo-l">E</span>
+    </span>
+
+    <nav class="filter-nav">
+      <button class="filter active" data-filter="all">All</button>
+      <span class="fsep">·</span>
+      <button class="filter" data-filter="MUSIC VIDEO">Music</button>
+      <span class="fsep">·</span>
+      <button class="filter" data-filter="COMMERCIAL">Commercial</button>
+      <span class="fsep">·</span>
+      <button class="filter" data-filter="PHOTO">Photo</button>
+    </nav>
+  </header>
+
+  <main class="main">
+    <!-- Full-width title list -->
+    <ul class="title-list" id="title-list"></ul>
+  </main>
+
+  <footer class="colophon">
+    <span class="col-text">Set in Cormorant Garamond, Bodoni Moda, Oswald, Bebas Neue &amp; others</span>
+    <span class="col-orn">&#10022;</span>
+    <span class="col-text">Typeface Studio &#10022; &copy; 2025</span>
+    <span class="col-orn">&#10022;</span>
+    <span class="col-text">Edition No. <span id="edition"></span></span>
+  </footer>
+
+  <!-- Floating image -->
+  <div class="img-float" id="img-float">
+    <img id="img-float-src" src="" alt="">
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
