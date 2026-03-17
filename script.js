@@ -126,7 +126,7 @@ function buildList(data) {
       ${img ? `<div class="title-row-bg"><img src="${img}" alt="" loading="lazy"></div>` : ""}
     `;
 
-    li.addEventListener("click", () => openProject(p));
+    li.addEventListener("click", () => openProject(p, li));
     ul.appendChild(li);
   });
 }
@@ -252,18 +252,23 @@ function setEdition() {
 }
 
 /* ── Project overlay ── */
+let lastRowRect = null;
+
 function getYouTubeId(url) {
   if (!url) return null;
   const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
   return m?.[1] || null;
 }
 
-function openProject(p) {
+function openProject(p, rowEl) {
   const overlay  = document.getElementById("project-overlay");
+  const panel    = overlay.querySelector(".ov-panel");
   const titleEl  = overlay.querySelector(".ov-title");
   const yearEl   = overlay.querySelector(".ov-year");
   const catEl    = overlay.querySelector(".ov-cat");
   const body     = overlay.querySelector(".ov-body");
+
+  lastRowRect = rowEl.getBoundingClientRect();
 
   titleEl.textContent = p.title;
   titleEl.className   = `ov-title ${p.tf || ""}`;
@@ -305,19 +310,48 @@ function openProject(p) {
     body.innerHTML = `<p class="ov-empty">No media available.</p>`;
   }
 
+  // Start clip-path at row position, then expand to full
+  const vh = window.innerHeight;
+  const top = Math.round(lastRowRect.top);
+  const bot = Math.round(vh - lastRowRect.bottom);
+  panel.style.transition = "none";
+  panel.style.clipPath = `inset(${top}px 0px ${bot}px 0px)`;
+
   overlay.classList.add("open");
   document.body.style.overflow = "hidden";
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      panel.style.transition = "clip-path 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)";
+      panel.style.clipPath = "inset(0px 0px 0px 0px)";
+    });
+  });
 }
 
 function closeProject() {
   const overlay = document.getElementById("project-overlay");
-  overlay.classList.remove("open");
-  document.body.style.overflow = "";
-  // Stop any playing video
+  const panel   = overlay.querySelector(".ov-panel");
+
+  // Stop any playing video immediately
   const iframe = overlay.querySelector("iframe");
   if (iframe) iframe.src = "";
   const muxPlayer = overlay.querySelector("mux-player");
   if (muxPlayer) muxPlayer.pause();
+
+  // Collapse back toward the originating row
+  const vh  = window.innerHeight;
+  const top = lastRowRect ? Math.round(lastRowRect.top)  : Math.round(vh / 2);
+  const bot = lastRowRect ? Math.round(vh - lastRowRect.bottom) : Math.round(vh / 2);
+  panel.style.transition = "clip-path 0.4s cubic-bezier(0.55, 0, 1, 0.45)";
+  panel.style.clipPath = `inset(${top}px 0px ${bot}px 0px)`;
+
+  overlay.classList.remove("open");
+  document.body.style.overflow = "";
+
+  setTimeout(() => {
+    panel.style.transition = "none";
+    panel.style.clipPath = "";
+  }, 420);
 }
 
 function setupOverlay() {
