@@ -306,6 +306,11 @@ function openProject(p, rowEl) {
 
   lastRowRect = rowEl.getBoundingClientRect();
 
+  // Populate ink bleed-through ghost with current title list
+  const ghost = overlay.querySelector(".ov-ghost");
+  const list  = document.getElementById("title-list");
+  if (ghost && list) ghost.innerHTML = list.innerHTML;
+
   titleEl.textContent = p.title;
   titleEl.className   = `ov-title ${p.tf || ""}`;
   yearEl.textContent  = p.year || "";

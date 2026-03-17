@@ -385,6 +385,11 @@ ul { list-style: none; }
   clip-path: inset(0% 0% 0% 0%);
 }
 
+/* Keep real content above the ghost */
+.ov-header,
+.ov-body,
+.ov-caption { position: relative; z-index: 1; }
+
 /* Overlay header */
 .ov-header {
   display: grid;
@@ -452,6 +457,31 @@ ul { list-style: none; }
   color: var(--faint);
   text-transform: uppercase;
 }
+
+/* Ink bleed-through ghost — mirror of main list at low opacity */
+.ov-ghost {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.055;
+  transform: scaleX(-1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 2rem 1.75rem;
+  z-index: 0;
+}
+
+.ov-ghost .tr-title {
+  display: block;
+  white-space: nowrap;
+  line-height: 1.15;
+}
+
+.ov-ghost .title-row-bg,
+.ov-ghost .tr-year,
+.ov-ghost .tr-cat { display: none; }
 
 /* Overlay body */
 .ov-body {
