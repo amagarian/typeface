@@ -6,7 +6,7 @@ const SANITY_API_URL    = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2024-01-0
 async function fetchProjects() {
   const query = encodeURIComponent(
     `*[_type == "project" && "typeface" in sites] | order(order asc) {
-      title, year, category, role,
+      title, year, category,
       "imageUrl": image.asset->url
     }`
   );
@@ -114,7 +114,7 @@ function buildList(data) {
 
     li.innerHTML = `
       <span class="tr-year">${p.year}</span>
-      <span class="tr-title ${tf}" data-text="${p.title}">${p.title}</span>
+      <span class="tr-title ${tf}">${p.title}</span>
       <span class="tr-cat">${p.category}</span>
       ${img ? `<div class="title-row-bg"><img src="${img}" alt="" loading="lazy"></div>` : ""}
     `;
