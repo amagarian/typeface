@@ -287,6 +287,13 @@ function setEdition() {
 /* ── Project overlay ── */
 let lastRowRect = null;
 
+function fmtTime(s) {
+  if (!s || isNaN(s)) return "0:00";
+  const m = Math.floor(s / 60);
+  const sec = Math.floor(s % 60);
+  return m + ":" + String(sec).padStart(2, "0");
+}
+
 function getYouTubeId(url) {
   if (!url) return null;
   const m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/);
@@ -335,9 +342,64 @@ function openProject(p, rowEl) {
 
   if (muxId) {
     const wrap = document.createElement("div");
-    wrap.className = "ov-video";
-    wrap.innerHTML = `<mux-player playback-id="${muxId}" stream-type="on-demand" autoplay style="width:100%;height:100%;"></mux-player>`;
+    wrap.className = "ov-mux-wrap";
+    wrap.innerHTML = `
+      <div class="ov-video" id="ov-video-click">
+        <mux-player id="ov-mux" playback-id="${muxId}" stream-type="on-demand" autoplay muted></mux-player>
+      </div>
+      <div class="ov-controls">
+        <div class="ov-progress" id="ov-progress">
+          <div class="ov-progress-track"><div class="ov-progress-fill" id="ov-progress-fill"></div></div>
+        </div>
+        <div class="ov-control-row">
+          <div class="ov-control-left">
+            <button class="ov-ctrl-btn" id="ov-btn-play">Pause</button>
+            <button class="ov-ctrl-btn" id="ov-btn-mute">Unmute</button>
+          </div>
+          <span class="ov-ctrl-time" id="ov-time">0:00 / 0:00</span>
+        </div>
+      </div>
+    `;
     body.appendChild(wrap);
+
+    // Wire up custom controls after mux-player initialises
+    setTimeout(() => {
+      const player   = document.getElementById("ov-mux");
+      const playBtn  = document.getElementById("ov-btn-play");
+      const muteBtn  = document.getElementById("ov-btn-mute");
+      const fill     = document.getElementById("ov-progress-fill");
+      const timeEl   = document.getElementById("ov-time");
+      const progress = document.getElementById("ov-progress");
+      const videoBox = document.getElementById("ov-video-click");
+      if (!player) return;
+
+      const togglePlay = () => {
+        if (player.paused) { player.play(); playBtn.textContent = "Pause"; }
+        else               { player.pause(); playBtn.textContent = "Play"; }
+      };
+      const toggleMute = () => {
+        player.muted = !player.muted;
+        muteBtn.textContent = player.muted ? "Unmute" : "Mute";
+      };
+
+      videoBox.addEventListener("click", togglePlay);
+      playBtn.addEventListener("click", togglePlay);
+      muteBtn.addEventListener("click", toggleMute);
+
+      player.addEventListener("timeupdate", () => {
+        if (!player.duration) return;
+        const pct = (player.currentTime / player.duration) * 100;
+        fill.style.width = pct + "%";
+        timeEl.textContent = fmtTime(player.currentTime) + " / " + fmtTime(player.duration);
+      });
+
+      progress.addEventListener("click", (e) => {
+        const rect = progress.getBoundingClientRect();
+        const frac = (e.clientX - rect.left) / rect.width;
+        if (player.duration) player.currentTime = frac * player.duration;
+      });
+    }, 150);
+
   } else if (ytId) {
     const wrap = document.createElement("div");
     wrap.className = "ov-video";

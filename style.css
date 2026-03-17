@@ -487,7 +487,7 @@ ul { list-style: none; }
   padding: 2rem 1.75rem;
 }
 
-/* Video embed */
+/* Video embed (iframes only — mux uses .ov-mux-wrap) */
 .ov-video {
   width: 100%;
   max-width: 960px;
@@ -496,12 +496,88 @@ ul { list-style: none; }
   flex-shrink: 0;
 }
 
-.ov-video iframe,
-.ov-video mux-player {
+.ov-video iframe {
   width: 100%;
   height: 100%;
   border: none;
   display: block;
+}
+
+/* Mux player — no built-in controls, custom ones below */
+mux-player {
+  --controls: none;
+  --media-object-fit: contain;
+  width: 100%;
+  height: auto;
+  display: block;
+  cursor: pointer;
+}
+
+mux-player::part(gesture-layer) { display: none; }
+
+/* Custom controls */
+.ov-mux-wrap {
+  width: 100%;
+  max-width: 960px;
+  flex-shrink: 0;
+}
+
+.ov-controls {
+  padding: 0.6rem 0 0;
+  border-top: 1px solid var(--rule-md);
+}
+
+.ov-progress {
+  width: 100%;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-bottom: 0.4rem;
+}
+
+.ov-progress-track {
+  width: 100%;
+  height: 2px;
+  background: rgba(26, 23, 20, 0.1);
+  position: relative;
+}
+
+.ov-progress-fill {
+  height: 100%;
+  width: 0%;
+  background: rgba(26, 23, 20, 0.4);
+  transition: width 0.1s linear;
+}
+
+.ov-control-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ov-control-left {
+  display: flex;
+  gap: 1rem;
+}
+
+.ov-ctrl-btn {
+  font-family: var(--mono);
+  font-size: 0.45rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--dim);
+  transition: color 0.15s;
+}
+
+.ov-ctrl-btn:hover { color: var(--ink); }
+
+.ov-ctrl-time {
+  font-family: var(--mono);
+  font-size: 0.45rem;
+  letter-spacing: 0.1em;
+  color: var(--faint);
+  tabular-nums: all;
 }
 
 /* Photo gallery — allow scrolling from top */
