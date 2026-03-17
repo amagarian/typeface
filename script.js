@@ -5,7 +5,7 @@ const SANITY_API_URL    = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2024-01-0
 
 async function fetchProjects() {
   const query = encodeURIComponent(
-    `*[_type == "project"] | order(order asc) {
+    `*[_type == "project" && "typeface" in sites] | order(order asc) {
       title, year, category, role, typeStyle,
       "imageUrl": image.asset->url
     }`
