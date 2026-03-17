@@ -6,7 +6,7 @@ const SANITY_API_URL    = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2024-01-0
 async function fetchProjects() {
   const query = encodeURIComponent(
     `*[_type == "project" && "typeface" in sites] | order(order asc) {
-      title, year, category, role, typeStyle,
+      title, year, category, role,
       "imageUrl": image.asset->url
     }`
   );
@@ -33,24 +33,47 @@ const FONTS = [
   { family: "Unbounded",          weight: "200", style: "normal" },
 ];
 
-/* ── Projects — typeface class chosen to create visual contrast between rows ── */
+/* ── Fallback project data (used if Sanity fetch fails) ── */
 const projects = [
-  { year: "2024", title: "Lil Dicky — Hahaha",                            category: "MUSIC VIDEO",  tf: "tf-cormorant",  image: "images/01-lil-dicky-hahaha.jpg" },
-  { year: "2025", title: "Sabrina Carpenter — Mans Best Friend",           category: "PHOTO",        tf: "tf-bebas",      image: "images/02-sabrina-carpenter-mans-best-friend.webp" },
-  { year: "2025", title: "Adela — Sex on the Beat",                        category: "MUSIC VIDEO",  tf: "tf-inter-thin", image: "images/03-adela-sex-on-the-beat.png" },
-  { year: "2025", title: "Open x Beats — Power Beats Pro 2",               category: "COMMERCIAL",   tf: "tf-oswald",     image: null },
-  { year: "2024", title: "Coin — Take It or Leave It",                     category: "MUSIC VIDEO",  tf: "tf-syne",       image: "images/05-coin-take-it-or-leave-it.jpg" },
-  { year: "2023", title: "Charlie Puth — Thats Not How This Works",        category: "MUSIC VIDEO",  tf: "tf-bodoni",     image: "images/06-charlie-puth.png" },
-  { year: "2024", title: "Tate McRae — So Close to What (Album Teaser)",  category: "MUSIC VIDEO",  tf: "tf-unbounded",  image: null },
-  { year: "2024", title: "Sabrina Carpenter — Short & Sweet Press Stills", category: "PHOTO",        tf: "tf-playfair",   image: "images/08-sabrina-carpenter-short-sweet.jpg" },
-  { year: "2025", title: "Halsey — So Good",                               category: "MUSIC VIDEO",  tf: "tf-inter-black",image: null },
-  { year: "2025", title: "Mercedes — Energizing Comfort",                  category: "COMMERCIAL",   tf: "tf-darker",     image: null },
-  { year: "2025", title: "Sans Gêne — Pre-Fall 2022 Campaign",             category: "COMMERCIAL",   tf: "tf-cormorant",  image: null },
-  { year: "2025", title: "Olivia Obrien — Olivia Obrien",                  category: "PHOTO",        tf: "tf-oswald",     image: "images/12-olivia-obrien.jpg" },
-  { year: "2022", title: "Sabrina Carpenter — Fast Times",                 category: "MUSIC VIDEO",  tf: "tf-bebas",      image: "images/13-sabrina-carpenter-fast-times.jpg" },
-  { year: "2024", title: "Tate McRae — So Close to What",                  category: "MUSIC VIDEO",  tf: "tf-syne",       image: "images/14-tate-mcrae-so-close.jpg" },
-  { year: "2021", title: "Spring Summer 2021 — Tatras",                    category: "PHOTO",        tf: "tf-inter-thin", image: "images/15-tatras-spring-summer.jpg" },
+  { year: "2024", title: "Lil Dicky — Hahaha",                            category: "MUSIC VIDEO",  image: "images/01-lil-dicky-hahaha.jpg" },
+  { year: "2025", title: "Sabrina Carpenter — Mans Best Friend",           category: "PHOTO",        image: "images/02-sabrina-carpenter-mans-best-friend.webp" },
+  { year: "2025", title: "Adela — Sex on the Beat",                        category: "MUSIC VIDEO",  image: "images/03-adela-sex-on-the-beat.png" },
+  { year: "2025", title: "Open x Beats — Power Beats Pro 2",               category: "COMMERCIAL",   image: null },
+  { year: "2024", title: "Coin — Take It or Leave It",                     category: "MUSIC VIDEO",  image: "images/05-coin-take-it-or-leave-it.jpg" },
+  { year: "2023", title: "Charlie Puth — Thats Not How This Works",        category: "MUSIC VIDEO",  image: "images/06-charlie-puth.png" },
+  { year: "2024", title: "Tate McRae — So Close to What (Album Teaser)",  category: "MUSIC VIDEO",  image: null },
+  { year: "2024", title: "Sabrina Carpenter — Short & Sweet Press Stills", category: "PHOTO",        image: "images/08-sabrina-carpenter-short-sweet.jpg" },
+  { year: "2025", title: "Halsey — So Good",                               category: "MUSIC VIDEO",  image: null },
+  { year: "2025", title: "Mercedes — Energizing Comfort",                  category: "COMMERCIAL",   image: null },
+  { year: "2025", title: "Sans Gêne — Pre-Fall 2022 Campaign",             category: "COMMERCIAL",   image: null },
+  { year: "2025", title: "Olivia Obrien — Olivia Obrien",                  category: "PHOTO",        image: "images/12-olivia-obrien.jpg" },
+  { year: "2022", title: "Sabrina Carpenter — Fast Times",                 category: "MUSIC VIDEO",  image: "images/13-sabrina-carpenter-fast-times.jpg" },
+  { year: "2024", title: "Tate McRae — So Close to What",                  category: "MUSIC VIDEO",  image: "images/14-tate-mcrae-so-close.jpg" },
+  { year: "2021", title: "Spring Summer 2021 — Tatras",                    category: "PHOTO",        image: "images/15-tatras-spring-summer.jpg" },
 ];
+
+/* ── Type style classes — randomly assigned per row on each load ── */
+const TYPE_STYLES = [
+  "tf-cormorant",
+  "tf-bebas",
+  "tf-inter-thin",
+  "tf-inter-black",
+  "tf-oswald",
+  "tf-bodoni",
+  "tf-syne",
+  "tf-playfair",
+  "tf-unbounded",
+  "tf-darker",
+];
+
+function assignTypeStyles(data) {
+  // Shuffle a copy of the styles so no two adjacent rows share a family
+  const shuffled = [...TYPE_STYLES].sort(() => Math.random() - 0.5);
+  return data.map((p, i) => ({
+    ...p,
+    tf: shuffled[i % shuffled.length],
+  }));
+}
 
 let currentFilter = "all";
 
@@ -68,7 +91,7 @@ async function init() {
     data = projects.map(p => ({ ...p, imageUrl: p.image }));
   }
 
-  buildList(data);
+  buildList(assignTypeStyles(data));
   setupFilters();
   setupPreview();
   fitAllTitles();
