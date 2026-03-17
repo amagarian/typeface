@@ -511,11 +511,12 @@ ul { list-style: none; }
   .intro-strip { padding: 2rem 1.25rem; }
 
   .title-row {
-    grid-template-columns: 48px 1fr;
+    grid-template-columns: auto 1fr;
     padding: 0 1.25rem;
   }
 
   .tr-cat { display: none; }
+  .tr-year { min-width: 0; }
 
   .img-float { display: none; }
 
