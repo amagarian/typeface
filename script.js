@@ -15,22 +15,28 @@ async function fetchProjects() {
   return data.result || [];
 }
 
-/* ── Logo font pool ── */
+/* ── Logo font pool — historically significant typefaces ── */
 const FONTS = [
-  { family: "Inter",              weight: "900", style: "normal" },
-  { family: "Inter",              weight: "100", style: "normal" },
-  { family: "Bebas Neue",         weight: "400", style: "normal" },
-  { family: "Playfair Display",   weight: "400", style: "italic" },
-  { family: "Bodoni Moda",        weight: "700", style: "normal" },
-  { family: "Cormorant Garamond", weight: "300", style: "italic" },
-  { family: "Cormorant Garamond", weight: "700", style: "normal" },
-  { family: "Oswald",             weight: "200", style: "normal" },
-  { family: "Oswald",             weight: "700", style: "normal" },
-  { family: "Darker Grotesque",   weight: "900", style: "normal" },
-  { family: "Space Mono",         weight: "400", style: "normal" },
-  { family: "Syne",               weight: "800", style: "normal" },
-  { family: "Unbounded",          weight: "900", style: "normal" },
-  { family: "Unbounded",          weight: "200", style: "normal" },
+  { family: "EB Garamond",        weight: "400", style: "normal"  }, // Garamond ~1530
+  { family: "EB Garamond",        weight: "400", style: "italic"  },
+  { family: "EB Garamond",        weight: "800", style: "normal"  },
+  { family: "Cinzel",             weight: "400", style: "normal"  }, // Roman inscription, 113 AD
+  { family: "Cinzel",             weight: "900", style: "normal"  },
+  { family: "Libre Baskerville",  weight: "400", style: "normal"  }, // Baskerville 1754
+  { family: "Libre Baskerville",  weight: "400", style: "italic"  },
+  { family: "Libre Baskerville",  weight: "700", style: "normal"  },
+  { family: "Bodoni Moda",        weight: "400", style: "italic"  }, // Bodoni 1798
+  { family: "Bodoni Moda",        weight: "900", style: "normal"  },
+  { family: "UnifrakturMaguntia", weight: "400", style: "normal"  }, // Fraktur / Gutenberg ~1450
+  { family: "Libre Franklin",     weight: "100", style: "normal"  }, // Franklin Gothic 1902
+  { family: "Libre Franklin",     weight: "900", style: "normal"  },
+  { family: "Josefin Sans",       weight: "100", style: "normal"  }, // Futura 1927
+  { family: "Josefin Sans",       weight: "700", style: "normal"  },
+  { family: "Oswald",             weight: "200", style: "normal"  }, // Trade Gothic 1948
+  { family: "Oswald",             weight: "700", style: "normal"  },
+  { family: "Courier Prime",      weight: "400", style: "normal"  }, // IBM Courier 1955
+  { family: "Playfair Display",   weight: "900", style: "italic"  }, // Victorian display
+  { family: "Playfair Display",   weight: "400", style: "italic"  },
 ];
 
 /* ── Fallback project data (used if Sanity fetch fails) ── */
@@ -52,18 +58,20 @@ const projects = [
   { year: "2021", title: "Spring Summer 2021 — Tatras",                    category: "PHOTO",        image: "images/15-tatras-spring-summer.jpg" },
 ];
 
-/* ── Type style classes — randomly assigned per row on each load ── */
+/* ── Type style classes — one per historical typeface era ── */
 const TYPE_STYLES = [
-  "tf-cormorant",
-  "tf-bebas",
-  "tf-inter-thin",
-  "tf-inter-black",
-  "tf-oswald",
-  "tf-bodoni",
-  "tf-syne",
-  "tf-playfair",
-  "tf-unbounded",
-  "tf-darker",
+  "tf-garamond",       // Claude Garamond, ~1530
+  "tf-garamond-bold",  // EB Garamond heavy display
+  "tf-cinzel",         // Roman inscription, 113 AD
+  "tf-baskerville",    // John Baskerville, 1754
+  "tf-bodoni",         // Bodoni, 1798 — didone italic
+  "tf-bodoni-heavy",   // Bodoni, 1798 — heavy display
+  "tf-fraktur",        // Gutenberg blackletter, ~1450
+  "tf-franklin",       // Franklin Gothic, 1902
+  "tf-futura",         // Futura, 1927 — Bauhaus
+  "tf-oswald",         // Trade Gothic condensed, 1948
+  "tf-courier",        // IBM Courier, 1955
+  "tf-playfair",       // Victorian high-contrast display
 ];
 
 function assignTypeStyles(data) {
