@@ -429,6 +429,7 @@ ul { list-style: none; }
   align-items: center;
   justify-content: center;
   padding: 2rem 1.75rem;
+  align-content: flex-start;
 }
 
 /* Video embed */
@@ -449,10 +450,10 @@ ul { list-style: none; }
 /* Photo gallery */
 .ov-gallery {
   width: 100%;
-  max-width: 1100px;
+  max-width: 900px;
   columns: 2;
   column-gap: 0.75rem;
-  align-self: flex-start;
+  margin: 0 auto;
 }
 
 .ov-gallery img {
