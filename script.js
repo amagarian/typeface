@@ -118,7 +118,7 @@ function buildList(data) {
     li.dataset.category = p.category;
     li.dataset.image    = img;
 
-    const displayTitle = p.subtitle ? `${p.title} — ${p.subtitle}` : p.title;
+    const displayTitle = p.subtitle ? `${p.subtitle} — ${p.title}` : p.title;
     li.innerHTML = `
       <span class="tr-year">${p.year || ""}</span>
       <span class="tr-title ${tf}">${displayTitle}</span>
