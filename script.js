@@ -336,7 +336,7 @@ function openProject(p, rowEl) {
   if (muxId) {
     const wrap = document.createElement("div");
     wrap.className = "ov-video";
-    wrap.innerHTML = `<mux-player playback-id="${muxId}" stream-type="on-demand" autoplay accent-color="#f0ede8" style="width:100%;height:100%;--media-background-color:transparent;"></mux-player>`;
+    wrap.innerHTML = `<mux-player playback-id="${muxId}" stream-type="on-demand" autoplay style="width:100%;height:100%;"></mux-player>`;
     body.appendChild(wrap);
   } else if (ytId) {
     const wrap = document.createElement("div");

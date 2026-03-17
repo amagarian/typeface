@@ -496,31 +496,12 @@ ul { list-style: none; }
   flex-shrink: 0;
 }
 
-.ov-video iframe {
+.ov-video iframe,
+.ov-video mux-player {
   width: 100%;
   height: 100%;
   border: none;
   display: block;
-}
-
-/* Mux player — minimal, transparent controls to match site aesthetic */
-.ov-video mux-player {
-  width: 100%;
-  height: 100%;
-  display: block;
-
-  --media-background-color: transparent;
-  --media-control-background: transparent;
-  --media-control-hover-background: transparent;
-  --media-controls-background: rgba(0, 0, 0, 0.45);
-  --media-primary-color: #f0ede8;
-  --media-secondary-color: rgba(240, 237, 232, 0.5);
-  --media-text-color: #f0ede8;
-  --media-icon-color: #f0ede8;
-  --media-range-track-color: rgba(240, 237, 232, 0.35);
-  --media-range-thumb-color: #f0ede8;
-  --media-time-font-size: 11px;
-  --media-font-family: var(--mono);
 }
 
 /* Photo gallery — allow scrolling from top */
