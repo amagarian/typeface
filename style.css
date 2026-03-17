@@ -423,6 +423,26 @@ ul { list-style: none; }
 
 .ov-close:hover { color: var(--ink); }
 
+/* Overlay caption (mobile only — desktop shows meta in header) */
+.ov-caption {
+  display: none;
+  flex-shrink: 0;
+  padding: 0.85rem 1.25rem;
+  border-top: 1px solid var(--rule-md);
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.ov-cap-year,
+.ov-cap-sep,
+.ov-cap-cat {
+  font-family: var(--mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.14em;
+  color: var(--faint);
+  text-transform: uppercase;
+}
+
 /* Overlay body */
 .ov-body {
   flex: 1;
@@ -527,5 +547,6 @@ ul { list-style: none; }
   .ov-header { grid-template-columns: 1fr auto; gap: 0.75rem; padding: 0.75rem 1.25rem; }
   .ov-header-meta { display: none; }
   .ov-body { padding: 1.25rem; align-items: flex-start; }
+  .ov-caption { display: flex; }
   .ov-gallery { columns: 1; }
 }

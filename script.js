@@ -292,14 +292,22 @@ function openProject(p, rowEl) {
   const titleEl  = overlay.querySelector(".ov-title");
   const yearEl   = overlay.querySelector(".ov-year");
   const catEl    = overlay.querySelector(".ov-cat");
+  const capYearEl = overlay.querySelector(".ov-cap-year");
+  const capSepEl  = overlay.querySelector(".ov-cap-sep");
+  const capCatEl  = overlay.querySelector(".ov-cap-cat");
   const body     = overlay.querySelector(".ov-body");
 
   lastRowRect = rowEl.getBoundingClientRect();
 
   titleEl.textContent = p.title;
   titleEl.className   = `ov-title ${p.tf || ""}`;
-  yearEl.textContent  = p.year;
-  catEl.textContent   = p.category;
+  yearEl.textContent  = p.year || "";
+  catEl.textContent   = p.category || "";
+
+  // Mobile caption strip
+  capYearEl.textContent = p.year || "";
+  capSepEl.style.display = (p.year && p.category) ? "" : "none";
+  capCatEl.textContent  = p.category || "";
 
   body.innerHTML = "";
 
