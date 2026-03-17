@@ -5,9 +5,9 @@ const SANITY_API_URL    = `https://${SANITY_PROJECT_ID}.api.sanity.io/v2024-01-0
 
 async function fetchProjects() {
   const query = encodeURIComponent(
-    `*[_type == "project" && "typeface" in sites] | order(order asc) {
-      title, year, category, videoUrl,
-      "imageUrl": image.asset->url,
+    `*[_type == "portfolioItem" && "typeface" in sites] | order(orderRank) {
+      title, subtitle, year, category, videoUrl, muxPlaybackId,
+      "imageUrl": media.asset->url,
       "galleryUrls": gallery[].asset->url
     }`
   );
@@ -43,23 +43,16 @@ const FONTS = [
   { family: "Courier Prime",     weight: "400", style: "italic"  },
 ];
 
-/* ── Fallback project data (used if Sanity is unreachable) ── */
+/* ── Fallback data (used only if Sanity is unreachable) ── */
 const projects = [
-  { year: 2024, title: "Lil Dicky — Hahaha",                            category: "MUSIC VIDEO"  },
-  { year: 2025, title: "Sabrina Carpenter — Mans Best Friend",           category: "PHOTO"        },
-  { year: 2025, title: "Adela — Sex on the Beat",                        category: "MUSIC VIDEO"  },
-  { year: 2025, title: "Open x Beats — Power Beats Pro 2",               category: "COMMERCIAL"   },
-  { year: 2024, title: "Coin — Take It or Leave It",                     category: "MUSIC VIDEO"  },
-  { year: 2023, title: "Charlie Puth — Thats Not How This Works",        category: "MUSIC VIDEO"  },
-  { year: 2024, title: "Tate McRae — So Close to What (Album Teaser)",   category: "MUSIC VIDEO"  },
-  { year: 2024, title: "Sabrina Carpenter — Short & Sweet Press Stills", category: "PHOTO"        },
-  { year: 2025, title: "Halsey — So Good",                               category: "MUSIC VIDEO"  },
-  { year: 2025, title: "Mercedes — Energizing Comfort",                  category: "COMMERCIAL"   },
-  { year: 2025, title: "Sans Gêne — Pre-Fall 2022 Campaign",             category: "COMMERCIAL"   },
-  { year: 2025, title: "Olivia Obrien — Olivia Obrien",                  category: "PHOTO"        },
-  { year: 2022, title: "Sabrina Carpenter — Fast Times",                 category: "MUSIC VIDEO"  },
-  { year: 2024, title: "Tate McRae — So Close to What",                  category: "MUSIC VIDEO"  },
-  { year: 2021, title: "Spring Summer 2021 — Tatras",                    category: "PHOTO"        },
+  { title: "HAHAHA",                   subtitle: "LIL DICKY",             category: "music-video"  },
+  { title: "MANCHILD",                 subtitle: "SABRINA CARPENTER",     category: "music-video"  },
+  { title: "POWERBEATS PRO 2",         subtitle: "BEATS x OPEN",          category: "commercial"   },
+  { title: "GREEDY",                   subtitle: "TATE MCRAE",            category: "music-video"  },
+  { title: "THATS NOT HOW THIS WORKS", subtitle: "CHARLIE PUTH",          category: "music-video"  },
+  { title: "SHORT AND SWEET ALBUM",    subtitle: "SABRINA CARPENTER",     category: "photoshoot"   },
+  { title: "EXES",                     subtitle: "TATE MCRAE",            category: "music-video"  },
+  { title: "ENERGIZING COMFORT",       subtitle: "MERCEDES BENZ",         category: "commercial"   },
 ];
 
 /* ── Type style classes — printing press & newspaper typefaces ── */
@@ -125,9 +118,10 @@ function buildList(data) {
     li.dataset.category = p.category;
     li.dataset.image    = img;
 
+    const displayTitle = p.subtitle ? `${p.title} — ${p.subtitle}` : p.title;
     li.innerHTML = `
-      <span class="tr-year">${p.year}</span>
-      <span class="tr-title ${tf}">${p.title}</span>
+      <span class="tr-year">${p.year || ""}</span>
+      <span class="tr-title ${tf}">${displayTitle}</span>
       <span class="tr-cat">${p.category}</span>
       ${img ? `<div class="title-row-bg"><img src="${img}" alt="" loading="lazy"></div>` : ""}
     `;
