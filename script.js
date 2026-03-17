@@ -345,7 +345,7 @@ function openProject(p, rowEl) {
     wrap.className = "ov-mux-wrap";
     wrap.innerHTML = `
       <div class="ov-video" id="ov-video-click">
-        <mux-player id="ov-mux" playback-id="${muxId}" stream-type="on-demand" autoplay muted></mux-player>
+        <mux-player id="ov-mux" playback-id="${muxId}" stream-type="on-demand" autoplay></mux-player>
       </div>
       <div class="ov-controls">
         <div class="ov-progress" id="ov-progress">
@@ -354,7 +354,7 @@ function openProject(p, rowEl) {
         <div class="ov-control-row">
           <div class="ov-control-left">
             <button class="ov-ctrl-btn" id="ov-btn-play">Pause</button>
-            <button class="ov-ctrl-btn" id="ov-btn-mute">Unmute</button>
+            <button class="ov-ctrl-btn" id="ov-btn-mute">Mute</button>
           </div>
           <span class="ov-ctrl-time" id="ov-time">0:00 / 0:00</span>
         </div>
@@ -381,6 +381,8 @@ function openProject(p, rowEl) {
         player.muted = !player.muted;
         muteBtn.textContent = player.muted ? "Unmute" : "Mute";
       };
+      // Ensure unmuted state reflected on load
+      muteBtn.textContent = player.muted ? "Unmute" : "Mute";
 
       videoBox.addEventListener("click", togglePlay);
       playBtn.addEventListener("click", togglePlay);
