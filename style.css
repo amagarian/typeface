@@ -182,6 +182,8 @@ ul { list-style: none; }
 .tr-title {
   display: block;
   white-space: nowrap;
+  overflow: hidden;
+  min-width: 0;
   line-height: 1;
   padding: 0.55rem 0;
   z-index: 1;

@@ -133,21 +133,12 @@ function buildList(data) {
 
 /* ── Scale each title to fill its column exactly ── */
 function fitTitle(el) {
-  const col = el.parentElement;
-  // Center column width = total - year col - cat col - padding
-  const style = getComputedStyle(col);
-  const totalW = col.clientWidth
-    - parseFloat(style.paddingLeft)
-    - parseFloat(style.paddingRight);
-  const yearW  = col.querySelector(".tr-year").offsetWidth;
-  const catW   = col.querySelector(".tr-cat")?.offsetWidth || 0;
-  const gap    = 16 * 1.75 * 2; // rough gap compensation
-  const available = totalW - yearW - catW;
+  // Set large size first, then read the grid-allocated clientWidth
+  // (clientWidth reflects the 1fr column size, not content overflow)
+  el.style.fontSize = "400px";
+  const available = el.clientWidth;
 
-  // Binary search for the right font size
   let lo = 6, hi = 400, mid;
-  el.style.fontSize = hi + "px";
-
   while (lo <= hi) {
     mid = (lo + hi) / 2;
     el.style.fontSize = mid + "px";
