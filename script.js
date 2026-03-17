@@ -154,8 +154,15 @@ function buildList(data) {
       ${img ? `<div class="title-row-bg"><img src="${img}" alt="" loading="lazy"></div>` : ""}
     `;
 
-    // On touch devices, open immediately on first tap (skip hover state)
+    // On touch devices, open immediately on first tap (skip hover state).
+    // Ignore if the finger moved (i.e. the user was scrolling).
+    let touchStartY = 0;
+    li.addEventListener("touchstart", (e) => {
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
     li.addEventListener("touchend", (e) => {
+      const delta = Math.abs(e.changedTouches[0].clientY - touchStartY);
+      if (delta > 8) return; // scrolled — ignore
       e.preventDefault();
       openProject(p, li);
     });
