@@ -206,88 +206,89 @@ ul { list-style: none; }
   color: var(--dim);
 }
 
-/* ── Type styles per project — one per historical typeface era ── */
+/* ── Type styles per project — historical printing press & newspaper typefaces ── */
 
-/* Claude Garamond, ~1530 — Renaissance old-style serif */
+/* Garamond, 1530 — the text face of Renaissance book printing */
 .tf-garamond {
   font-family: 'EB Garamond', serif;
   font-weight: 400;
   font-style: italic;
 }
 
-/* EB Garamond heavy — display cut of the same Renaissance face */
+/* EB Garamond heavy — display headline cut */
 .tf-garamond-bold {
   font-family: 'EB Garamond', serif;
   font-weight: 800;
   font-style: normal;
 }
 
-/* Roman inscriptions, Trajan's Column, 113 AD */
-.tf-cinzel {
-  font-family: 'Cinzel', serif;
-  font-weight: 400;
-  letter-spacing: 0.1em;
-}
-
-/* John Baskerville, 1754 — the transitional serif */
+/* Baskerville, 1757 — transitional serif, set the standard for fine printing */
 .tf-baskerville {
   font-family: 'Libre Baskerville', serif;
   font-weight: 400;
   font-style: italic;
 }
 
-/* Giambattista Bodoni, 1798 — peak didone hairline contrast */
+/* Baskerville bold — subhead cut */
+.tf-baskerville-bold {
+  font-family: 'Libre Baskerville', serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+/* Bodoni, 1798 — 19th century newspaper headline serif */
 .tf-bodoni {
   font-family: 'Bodoni Moda', serif;
   font-weight: 400;
   font-style: italic;
 }
 
-/* Bodoni heavy display cut */
+/* Bodoni heavy — front-page display */
 .tf-bodoni-heavy {
   font-family: 'Bodoni Moda', serif;
   font-weight: 900;
   font-style: normal;
 }
 
-/* Gutenberg-era Fraktur blackletter, ~1450 */
-.tf-fraktur {
-  font-family: 'UnifrakturMaguntia', cursive;
-  font-weight: 400;
+/* Playfair Display — Victorian editorial headline */
+.tf-playfair {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-style: italic;
 }
 
-/* Morris Fuller Benton, Franklin Gothic, 1902 — American grotesque */
+/* Franklin Gothic, 1902 — the American newspaper headline grotesque */
 .tf-franklin {
   font-family: 'Libre Franklin', sans-serif;
   font-weight: 900;
-  letter-spacing: -0.025em;
+  letter-spacing: -0.02em;
 }
 
-/* Paul Renner, Futura, 1927 — Bauhaus geometric sans */
-.tf-futura {
-  font-family: 'Josefin Sans', sans-serif;
+/* Franklin Gothic light — ultra-thin grotesque cut */
+.tf-franklin-light {
+  font-family: 'Libre Franklin', sans-serif;
   font-weight: 100;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.01em;
 }
 
-/* Trade Gothic condensed, 1948 — workhorse American condensed */
+/* News Cycle — designed specifically as a newspaper typeface */
+.tf-news-cycle {
+  font-family: 'News Cycle', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* Oswald — condensed grotesque, newspaper column headline */
 .tf-oswald {
   font-family: 'Oswald', sans-serif;
   font-weight: 700;
   letter-spacing: 0.02em;
 }
 
-/* IBM Courier, Howard Kettler, 1955 — the typewriter font */
+/* Courier Prime — the press typewriter, IBM Courier 1955 */
 .tf-courier {
   font-family: 'Courier Prime', monospace;
   font-weight: 400;
-}
-
-/* Victorian high-contrast display — Playfair Display black italic */
-.tf-playfair {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  font-style: italic;
 }
 
 /* ══════════════════════════════════

@@ -16,28 +16,31 @@ async function fetchProjects() {
   return data.result || [];
 }
 
-/* ── Logo font pool — historically significant typefaces ── */
+/* ── Logo font pool — printing press & newspaper typefaces ── */
 const FONTS = [
-  { family: "EB Garamond",        weight: "400", style: "normal"  }, // Garamond ~1530
-  { family: "EB Garamond",        weight: "400", style: "italic"  },
-  { family: "EB Garamond",        weight: "800", style: "normal"  },
-  { family: "Cinzel",             weight: "400", style: "normal"  }, // Roman inscription, 113 AD
-  { family: "Cinzel",             weight: "900", style: "normal"  },
-  { family: "Libre Baskerville",  weight: "400", style: "normal"  }, // Baskerville 1754
-  { family: "Libre Baskerville",  weight: "400", style: "italic"  },
-  { family: "Libre Baskerville",  weight: "700", style: "normal"  },
-  { family: "Bodoni Moda",        weight: "400", style: "italic"  }, // Bodoni 1798
-  { family: "Bodoni Moda",        weight: "900", style: "normal"  },
-  { family: "UnifrakturMaguntia", weight: "400", style: "normal"  }, // Fraktur / Gutenberg ~1450
-  { family: "Libre Franklin",     weight: "100", style: "normal"  }, // Franklin Gothic 1902
-  { family: "Libre Franklin",     weight: "900", style: "normal"  },
-  { family: "Josefin Sans",       weight: "100", style: "normal"  }, // Futura 1927
-  { family: "Josefin Sans",       weight: "700", style: "normal"  },
-  { family: "Oswald",             weight: "200", style: "normal"  }, // Trade Gothic 1948
-  { family: "Oswald",             weight: "700", style: "normal"  },
-  { family: "Courier Prime",      weight: "400", style: "normal"  }, // IBM Courier 1955
-  { family: "Playfair Display",   weight: "900", style: "italic"  }, // Victorian display
-  { family: "Playfair Display",   weight: "400", style: "italic"  },
+  { family: "EB Garamond",       weight: "400", style: "normal"  }, // Garamond 1530
+  { family: "EB Garamond",       weight: "400", style: "italic"  },
+  { family: "EB Garamond",       weight: "700", style: "normal"  },
+  { family: "EB Garamond",       weight: "800", style: "normal"  },
+  { family: "Libre Baskerville", weight: "400", style: "normal"  }, // Baskerville 1757
+  { family: "Libre Baskerville", weight: "400", style: "italic"  },
+  { family: "Libre Baskerville", weight: "700", style: "normal"  },
+  { family: "Bodoni Moda",       weight: "400", style: "italic"  }, // Bodoni 1798
+  { family: "Bodoni Moda",       weight: "700", style: "normal"  },
+  { family: "Bodoni Moda",       weight: "900", style: "normal"  },
+  { family: "Playfair Display",  weight: "400", style: "italic"  }, // Victorian editorial
+  { family: "Playfair Display",  weight: "700", style: "italic"  },
+  { family: "Playfair Display",  weight: "900", style: "normal"  },
+  { family: "Libre Franklin",    weight: "100", style: "normal"  }, // Franklin Gothic 1902
+  { family: "Libre Franklin",    weight: "400", style: "normal"  },
+  { family: "Libre Franklin",    weight: "900", style: "normal"  },
+  { family: "News Cycle",        weight: "400", style: "normal"  }, // Newspaper face
+  { family: "News Cycle",        weight: "700", style: "normal"  },
+  { family: "Oswald",            weight: "200", style: "normal"  }, // Condensed grotesque
+  { family: "Oswald",            weight: "400", style: "normal"  },
+  { family: "Oswald",            weight: "700", style: "normal"  },
+  { family: "Courier Prime",     weight: "400", style: "normal"  }, // Press typewriter 1955
+  { family: "Courier Prime",     weight: "400", style: "italic"  },
 ];
 
 /* ── Fallback project data (used if Sanity is unreachable) ── */
@@ -59,20 +62,20 @@ const projects = [
   { year: 2021, title: "Spring Summer 2021 — Tatras",                    category: "PHOTO"        },
 ];
 
-/* ── Type style classes — one per historical typeface era ── */
+/* ── Type style classes — printing press & newspaper typefaces ── */
 const TYPE_STYLES = [
-  "tf-garamond",       // Claude Garamond, ~1530
-  "tf-garamond-bold",  // EB Garamond heavy display
-  "tf-cinzel",         // Roman inscription, 113 AD
-  "tf-baskerville",    // John Baskerville, 1754
-  "tf-bodoni",         // Bodoni, 1798 — didone italic
-  "tf-bodoni-heavy",   // Bodoni, 1798 — heavy display
-  "tf-fraktur",        // Gutenberg blackletter, ~1450
-  "tf-franklin",       // Franklin Gothic, 1902
-  "tf-futura",         // Futura, 1927 — Bauhaus
-  "tf-oswald",         // Trade Gothic condensed, 1948
-  "tf-courier",        // IBM Courier, 1955
-  "tf-playfair",       // Victorian high-contrast display
+  "tf-garamond",        // Garamond 1530 — Renaissance text face
+  "tf-garamond-bold",   // Garamond heavy display
+  "tf-baskerville",     // Baskerville 1757 — transitional
+  "tf-baskerville-bold",// Baskerville bold
+  "tf-bodoni",          // Bodoni 1798 — newspaper headline serif
+  "tf-bodoni-heavy",    // Bodoni heavy display
+  "tf-playfair",        // Victorian editorial headline
+  "tf-franklin",        // Franklin Gothic 1902 — newspaper grotesque
+  "tf-franklin-light",  // Franklin Gothic ultra-thin
+  "tf-news-cycle",      // News Cycle — newspaper face
+  "tf-oswald",          // Condensed grotesque headline
+  "tf-courier",         // Courier 1955 — press typewriter
 ];
 
 function assignTypeStyles(data) {
