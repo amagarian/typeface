@@ -520,7 +520,8 @@ ul { list-style: none; }
 
   .img-float { display: none; }
 
-  .colophon { flex-direction: column; align-items: flex-start; padding: 1rem 1.25rem; }
+  .colophon { flex-direction: row; flex-wrap: nowrap; padding: 1rem 1.25rem; justify-content: space-between; }
+  .col-fontlist { display: none; }
 
   .ov-panel { inset: 0; }
   .ov-header { grid-template-columns: 1fr auto; gap: 0.75rem; padding: 0.75rem 1.25rem; }
