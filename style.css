@@ -103,7 +103,6 @@ ul { list-style: none; }
 
 .filter.active {
   color: var(--ink);
-  border-bottom-color: var(--ink);
 }
 
 .fsep {
