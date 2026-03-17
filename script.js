@@ -272,10 +272,16 @@ function openProject(p) {
 
   body.innerHTML = "";
 
+  const muxId   = p.muxPlaybackId || null;
   const ytId    = getYouTubeId(p.videoUrl);
   const gallery = p.galleryUrls?.filter(Boolean) || [];
 
-  if (ytId) {
+  if (muxId) {
+    const wrap = document.createElement("div");
+    wrap.className = "ov-video";
+    wrap.innerHTML = `<mux-player playback-id="${muxId}" stream-type="on-demand" autoplay style="width:100%;height:100%;"></mux-player>`;
+    body.appendChild(wrap);
+  } else if (ytId) {
     const wrap = document.createElement("div");
     wrap.className = "ov-video";
     wrap.innerHTML = `<iframe src="https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
@@ -307,9 +313,11 @@ function closeProject() {
   const overlay = document.getElementById("project-overlay");
   overlay.classList.remove("open");
   document.body.style.overflow = "";
-  // Kill any playing video
+  // Stop any playing video
   const iframe = overlay.querySelector("iframe");
   if (iframe) iframe.src = "";
+  const muxPlayer = overlay.querySelector("mux-player");
+  if (muxPlayer) muxPlayer.pause();
 }
 
 function setupOverlay() {
