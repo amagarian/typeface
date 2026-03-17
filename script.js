@@ -307,11 +307,14 @@ function openProject(p, rowEl) {
   lastRowRect = rowEl.getBoundingClientRect();
 
   // Populate ink bleed-through ghost — clone the full ul so CSS grid layout is preserved
-  const ghost = overlay.querySelector(".ov-ghost");
-  const list  = document.getElementById("title-list");
+  const ghost  = overlay.querySelector(".ov-ghost");
+  const list   = document.getElementById("title-list");
+  const header = overlay.querySelector(".ov-header");
   if (ghost && list) {
     ghost.innerHTML = "";
     ghost.appendChild(list.cloneNode(true));
+    // Push ghost below the overlay header so it doesn't bleed over it
+    ghost.style.top = (header ? header.offsetHeight : 0) + "px";
   }
 
   titleEl.textContent = p.title;
