@@ -161,7 +161,7 @@ ul { list-style: none; }
 }
 
 .title-row:hover .title-row-bg {
-  opacity: 0.22;
+  opacity: 0.40;
 }
 
 /* Left meta: year */
