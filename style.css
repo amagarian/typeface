@@ -33,17 +33,11 @@ a { color: inherit; text-decoration: none; }
 button { background: none; border: none; cursor: pointer; color: inherit; font-family: inherit; }
 ul { list-style: none; }
 
-/* ── Screen print ink bleed — ink soaks very slightly into the paper ── */
-.tr-title {
-  text-shadow:
-    0 0 1px rgba(13, 11, 8, 0.25),
-    0.3px 0.3px 1.5px rgba(13, 11, 8, 0.1);
-}
-
-.logo-l {
-  text-shadow:
-    0 0 0.8px rgba(13, 11, 8, 0.2),
-    0.2px 0.2px 1px rgba(13, 11, 8, 0.08);
+/* ── Screen print texture on ink ── */
+.tr-title,
+.logo-l,
+.ov-title {
+  filter: url(#screenprint);
 }
 
 /* ══════════════════════════════════

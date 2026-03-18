@@ -29,6 +29,28 @@
 </head>
 <body>
 
+  <!-- Screen print texture: creates uneven ink coverage within letterforms -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
+    <defs>
+      <filter id="screenprint" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">
+        <!-- Fine organic noise -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" seed="9" result="noise"/>
+        <!-- Desaturate to gray -->
+        <feColorMatrix in="noise" type="saturate" values="0" result="gray"/>
+        <!-- Pull values down so effect is subtle — max ~18% lightening -->
+        <feComponentTransfer in="gray" result="subtleNoise">
+          <feFuncR type="linear" slope="0.18" intercept="0"/>
+          <feFuncG type="linear" slope="0.18" intercept="0"/>
+          <feFuncB type="linear" slope="0.18" intercept="0"/>
+        </feComponentTransfer>
+        <!-- Clip noise to text shape only -->
+        <feComposite in="subtleNoise" in2="SourceGraphic" operator="in" result="maskedNoise"/>
+        <!-- Lighten: where ink is black, slight noise values show through -->
+        <feBlend in="SourceGraphic" in2="maskedNoise" mode="lighten"/>
+      </filter>
+    </defs>
+  </svg>
+
 
   <header class="header">
     <span class="logo" id="logo" aria-label="TYPEFACE">
