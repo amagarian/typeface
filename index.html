@@ -34,28 +34,37 @@
     <defs>
       <filter id="screenprint" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
 
-        <!-- Step 1: dilate the ink slightly so displacement has room to bite into edges -->
-        <feMorphology in="SourceGraphic" operator="dilate" radius="0.6" result="dilated"/>
+        <!-- Edge noise — stitchTiles keeps it static as element size changes -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="4" seed="3" stitchTiles="stitch" result="edgeNoise"/>
 
-        <!-- Step 2: fine high-frequency noise for organic edge distortion -->
-        <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="4" seed="3" result="edgeNoise"/>
+        <!-- Dilate so displacement has room without creating gap artifacts -->
+        <feMorphology in="SourceGraphic" operator="dilate" radius="0.7" result="dilated"/>
 
-        <!-- Step 3: displace edges with very small scale — organic roughness, not glitch -->
+        <!-- Fine displacement for organic edge roughness -->
         <feDisplacementMap in="dilated" in2="edgeNoise" scale="1.8"
           xChannelSelector="R" yChannelSelector="G" result="roughEdge"/>
 
-        <!-- Step 4: interior ink texture — noise clipped to rough letterform -->
-        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="9" result="fillNoise"/>
+        <!-- Isolate only the bleeding edge pixels (displaced area outside original letterform) -->
+        <feComposite in="roughEdge" in2="SourceGraphic" operator="out" result="bleedPixels"/>
+
+        <!-- Make bleed pixels 50% opacity — ink bleeding softly into paper -->
+        <feComponentTransfer in="bleedPixels" result="semiBleed">
+          <feFuncA type="linear" slope="0.5"/>
+        </feComponentTransfer>
+
+        <!-- Interior ink texture clipped to original letterform -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="9" stitchTiles="stitch" result="fillNoise"/>
         <feColorMatrix in="fillNoise" type="saturate" values="0" result="gray"/>
         <feComponentTransfer in="gray" result="lifted">
           <feFuncR type="linear" slope="0.3" intercept="0.04"/>
           <feFuncG type="linear" slope="0.3" intercept="0.04"/>
           <feFuncB type="linear" slope="0.3" intercept="0.04"/>
         </feComponentTransfer>
-        <feComposite in="lifted" in2="roughEdge" operator="in" result="maskedFill"/>
+        <feComposite in="lifted" in2="SourceGraphic" operator="in" result="maskedFill"/>
+        <feBlend in="SourceGraphic" in2="maskedFill" mode="lighten" result="texturedInk"/>
 
-        <!-- Step 5: blend interior texture over the rough-edged ink -->
-        <feBlend in="roughEdge" in2="maskedFill" mode="lighten"/>
+        <!-- Composite: sharp textured ink on top, soft bleed surrounding it -->
+        <feComposite in="texturedInk" in2="semiBleed" operator="over"/>
 
       </filter>
     </defs>
