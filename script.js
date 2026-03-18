@@ -218,23 +218,40 @@ function setupFilters() {
 }
 
 /* ── Floating image preview ── */
+const TARGET_DIAGONAL = 480; // px — all previews normalised to this diagonal
+
+function setSizeByDiagonal(img, preview) {
+  const w = img.naturalWidth, h = img.naturalHeight;
+  if (!w || !h) return;
+  const scale = TARGET_DIAGONAL / Math.sqrt(w * w + h * h);
+  preview.style.width  = Math.round(w * scale) + "px";
+  preview.style.height = Math.round(h * scale) + "px";
+}
+
 function setupPreview() {
   const preview = document.getElementById("img-float");
   const img     = document.getElementById("img-float-src");
+
+  // Resize whenever a new image loads
+  img.addEventListener("load", () => setSizeByDiagonal(img, preview));
 
   document.querySelectorAll(".title-row").forEach((row) => {
     const src = row.dataset.image;
 
     row.addEventListener("mouseenter", () => {
       if (!src) return;
-      img.src = src;
+      if (img.src !== src) {
+        img.src = src;
+      } else {
+        setSizeByDiagonal(img, preview);
+      }
       preview.classList.add("on");
     });
 
     row.addEventListener("mousemove", (e) => {
       if (!src) return;
-      const x = Math.min(e.clientX + 28, window.innerWidth - 320);
-      const y = Math.min(e.clientY - 80, window.innerHeight - preview.offsetHeight - 20);
+      const x = Math.min(e.clientX + 28, window.innerWidth  - preview.offsetWidth  - 20);
+      const y = Math.min(e.clientY - 80,  window.innerHeight - preview.offsetHeight - 20);
       preview.style.transform = `translate(${x}px, ${y}px)`;
     });
 
