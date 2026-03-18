@@ -356,7 +356,10 @@ function openProject(p, rowEl) {
             <button class="ov-ctrl-btn" id="ov-btn-play">Pause</button>
             <button class="ov-ctrl-btn" id="ov-btn-mute">Mute</button>
           </div>
-          <span class="ov-ctrl-time" id="ov-time">0:00 / 0:00</span>
+          <div class="ov-control-right">
+            <span class="ov-ctrl-time" id="ov-time">0:00 / 0:00</span>
+            <button class="ov-ctrl-btn" id="ov-btn-fs">Fullscreen</button>
+          </div>
         </div>
       </div>
     `;
@@ -367,6 +370,7 @@ function openProject(p, rowEl) {
       const player   = document.getElementById("ov-mux");
       const playBtn  = document.getElementById("ov-btn-play");
       const muteBtn  = document.getElementById("ov-btn-mute");
+      const fsBtn    = document.getElementById("ov-btn-fs");
       const fill     = document.getElementById("ov-progress-fill");
       const timeEl   = document.getElementById("ov-time");
       const progress = document.getElementById("ov-progress");
@@ -381,12 +385,27 @@ function openProject(p, rowEl) {
         player.muted = !player.muted;
         muteBtn.textContent = player.muted ? "Unmute" : "Mute";
       };
+      const toggleFullscreen = () => {
+        const el = player;
+        if (!document.fullscreenElement) {
+          (el.requestFullscreen || el.webkitRequestFullscreen || el.mozRequestFullScreen).call(el);
+          fsBtn.textContent = "Exit";
+        } else {
+          (document.exitFullscreen || document.webkitExitFullscreen || document.mozCancelFullScreen).call(document);
+          fsBtn.textContent = "Fullscreen";
+        }
+      };
+      document.addEventListener("fullscreenchange", () => {
+        if (!document.fullscreenElement) fsBtn.textContent = "Fullscreen";
+      });
+
       // Ensure unmuted state reflected on load
       muteBtn.textContent = player.muted ? "Unmute" : "Mute";
 
       videoBox.addEventListener("click", togglePlay);
       playBtn.addEventListener("click", togglePlay);
       muteBtn.addEventListener("click", toggleMute);
+      fsBtn.addEventListener("click", toggleFullscreen);
 
       player.addEventListener("timeupdate", () => {
         if (!player.duration) return;

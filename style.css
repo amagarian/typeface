@@ -562,6 +562,12 @@ mux-player::part(gesture-layer) { display: none; }
   gap: 1rem;
 }
 
+.ov-control-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
 .ov-ctrl-btn {
   font-family: var(--mono);
   font-size: 0.45rem;
