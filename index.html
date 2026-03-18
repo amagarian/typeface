@@ -29,24 +29,22 @@
 </head>
 <body>
 
-  <!-- Screen print texture: creates uneven ink coverage within letterforms -->
+  <!-- Screen print texture: noise clipped to letterforms, lifts ink unevenly -->
   <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
     <defs>
-      <filter id="screenprint" x="-2%" y="-2%" width="104%" height="104%" color-interpolation-filters="sRGB">
-        <!-- Fine organic noise -->
-        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" seed="9" result="noise"/>
-        <!-- Desaturate to gray -->
+      <filter id="screenprint" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="9" result="noise"/>
         <feColorMatrix in="noise" type="saturate" values="0" result="gray"/>
-        <!-- Pull values down so effect is subtle — max ~18% lightening -->
-        <feComponentTransfer in="gray" result="subtleNoise">
-          <feFuncR type="linear" slope="0.18" intercept="0"/>
-          <feFuncG type="linear" slope="0.18" intercept="0"/>
-          <feFuncB type="linear" slope="0.18" intercept="0"/>
+        <!-- Lift into a visible range: values from 4% to 38% -->
+        <feComponentTransfer in="gray" result="lifted">
+          <feFuncR type="linear" slope="0.34" intercept="0.04"/>
+          <feFuncG type="linear" slope="0.34" intercept="0.04"/>
+          <feFuncB type="linear" slope="0.34" intercept="0.04"/>
         </feComponentTransfer>
-        <!-- Clip noise to text shape only -->
-        <feComposite in="subtleNoise" in2="SourceGraphic" operator="in" result="maskedNoise"/>
-        <!-- Lighten: where ink is black, slight noise values show through -->
-        <feBlend in="SourceGraphic" in2="maskedNoise" mode="lighten"/>
+        <!-- Clip to letterform shape only -->
+        <feComposite in="lifted" in2="SourceGraphic" operator="in" result="masked"/>
+        <!-- Lighten the ink where noise is brighter -->
+        <feBlend in="SourceGraphic" in2="masked" mode="lighten"/>
       </filter>
     </defs>
   </svg>
