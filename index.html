@@ -29,22 +29,34 @@
 </head>
 <body>
 
-  <!-- Screen print texture: noise clipped to letterforms, lifts ink unevenly -->
+  <!-- Screen print texture: rough organic edges + uneven interior ink -->
   <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
     <defs>
       <filter id="screenprint" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
-        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="9" result="noise"/>
-        <feColorMatrix in="noise" type="saturate" values="0" result="gray"/>
-        <!-- Lift into a visible range: values from 4% to 38% -->
+
+        <!-- Step 1: dilate the ink slightly so displacement has room to bite into edges -->
+        <feMorphology in="SourceGraphic" operator="dilate" radius="0.6" result="dilated"/>
+
+        <!-- Step 2: fine high-frequency noise for organic edge distortion -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="4" seed="3" result="edgeNoise"/>
+
+        <!-- Step 3: displace edges with very small scale — organic roughness, not glitch -->
+        <feDisplacementMap in="dilated" in2="edgeNoise" scale="1.8"
+          xChannelSelector="R" yChannelSelector="G" result="roughEdge"/>
+
+        <!-- Step 4: interior ink texture — noise clipped to rough letterform -->
+        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="9" result="fillNoise"/>
+        <feColorMatrix in="fillNoise" type="saturate" values="0" result="gray"/>
         <feComponentTransfer in="gray" result="lifted">
-          <feFuncR type="linear" slope="0.34" intercept="0.04"/>
-          <feFuncG type="linear" slope="0.34" intercept="0.04"/>
-          <feFuncB type="linear" slope="0.34" intercept="0.04"/>
+          <feFuncR type="linear" slope="0.3" intercept="0.04"/>
+          <feFuncG type="linear" slope="0.3" intercept="0.04"/>
+          <feFuncB type="linear" slope="0.3" intercept="0.04"/>
         </feComponentTransfer>
-        <!-- Clip to letterform shape only -->
-        <feComposite in="lifted" in2="SourceGraphic" operator="in" result="masked"/>
-        <!-- Lighten the ink where noise is brighter -->
-        <feBlend in="SourceGraphic" in2="masked" mode="lighten"/>
+        <feComposite in="lifted" in2="roughEdge" operator="in" result="maskedFill"/>
+
+        <!-- Step 5: blend interior texture over the rough-edged ink -->
+        <feBlend in="roughEdge" in2="maskedFill" mode="lighten"/>
+
       </filter>
     </defs>
   </svg>
