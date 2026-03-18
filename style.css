@@ -34,7 +34,7 @@ button { background: none; border: none; cursor: pointer; color: inherit; font-f
 ul { list-style: none; }
 
 /* ── Screen print texture on ink ── */
-.title-row,
+.tr-title,
 .logo,
 .ov-title {
   filter: url(#screenprint);
