@@ -1,3 +1,57 @@
+/* ── Pre-bake noise texture into SVG filter as static feImage ── */
+function bakeNoiseTexture() {
+  const SIZE = 512;
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = SIZE;
+  const ctx = canvas.getContext("2d");
+  const img = ctx.createImageData(SIZE, SIZE);
+
+  // Simple value-noise bake — deterministic, never shifts
+  function hash(x, y) {
+    let h = x * 374761393 + y * 668265263;
+    h = (h ^ (h >> 13)) * 1274126177;
+    return (h ^ (h >> 16)) & 0xff;
+  }
+  function smooth(x, y) {
+    const xi = Math.floor(x), yi = Math.floor(y);
+    const xf = x - xi, yf = y - yi;
+    const ux = xf * xf * (3 - 2 * xf), uy = yf * yf * (3 - 2 * yf);
+    const a = hash(xi, yi), b = hash(xi + 1, yi);
+    const c = hash(xi, yi + 1), d = hash(xi + 1, yi + 1);
+    return a + (b - a) * ux + (c - a) * uy + (d + a - b - c) * ux * uy;
+  }
+  for (let y = 0; y < SIZE; y++) {
+    for (let x = 0; x < SIZE; x++) {
+      const freq = 6;
+      let v = smooth(x * freq / SIZE, y * freq / SIZE) / 255;
+      // add finer octave
+      v = (v * 0.7 + smooth(x * freq * 2 / SIZE, y * freq * 2 / SIZE) / 255 * 0.3);
+      const i = (y * SIZE + x) * 4;
+      const byte = Math.round(v * 255);
+      img.data[i] = img.data[i+1] = img.data[i+2] = byte;
+      img.data[i+3] = 255;
+    }
+  }
+  ctx.putImageData(img, 0, 0);
+
+  // Inject as feImage into the existing SVG filter
+  const dataURL = canvas.toDataURL("image/png");
+  const svgNS = "http://www.w3.org/2000/svg";
+  const filter = document.getElementById("screenprint");
+  if (!filter) return;
+
+  // Replace feTurbulence nodes with feImage referencing the baked texture
+  filter.querySelectorAll("feTurbulence").forEach((el, i) => {
+    const img = document.createElementNS(svgNS, "feImage");
+    img.setAttribute("href", dataURL);
+    img.setAttribute("x", "0"); img.setAttribute("y", "0");
+    img.setAttribute("width", "100%"); img.setAttribute("height", "100%");
+    img.setAttribute("preserveAspectRatio", "xMidYMid slice");
+    img.setAttribute("result", el.getAttribute("result"));
+    el.replaceWith(img);
+  });
+}
+
 /* ── Sanity config ── */
 const SANITY_PROJECT_ID = "jnzz8urn";
 const SANITY_DATASET    = "production";
@@ -482,4 +536,7 @@ function setupOverlay() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", init);
+document.addEventListener("DOMContentLoaded", () => {
+  bakeNoiseTexture();
+  init();
+});
