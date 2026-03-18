@@ -309,7 +309,7 @@ ul { list-style: none; }
 
 .img-float {
   position: fixed;
-  width: 300px;
+  width: 420px;
   top: 0; left: 0;
   pointer-events: none;
   z-index: 200;
