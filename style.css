@@ -33,12 +33,6 @@ a { color: inherit; text-decoration: none; }
 button { background: none; border: none; cursor: pointer; color: inherit; font-family: inherit; }
 ul { list-style: none; }
 
-/* ── Screen print texture on ink ── */
-.tr-title,
-.logo,
-.ov-title {
-  filter: url(#screenprint);
-}
 
 /* ══════════════════════════════════
    HEADER

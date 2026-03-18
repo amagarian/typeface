@@ -29,46 +29,6 @@
 </head>
 <body>
 
-  <!-- Screen print texture: rough organic edges + uneven interior ink -->
-  <svg xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden" aria-hidden="true">
-    <defs>
-      <filter id="screenprint" x="-4%" y="-4%" width="108%" height="108%" color-interpolation-filters="sRGB">
-
-        <!-- Edge noise — stitchTiles keeps it static as element size changes -->
-        <feTurbulence type="fractalNoise" baseFrequency="0.35" numOctaves="4" seed="3" stitchTiles="stitch" result="edgeNoise"/>
-
-        <!-- Dilate so displacement has room without creating gap artifacts -->
-        <feMorphology in="SourceGraphic" operator="dilate" radius="0.7" result="dilated"/>
-
-        <!-- Fine displacement for organic edge roughness -->
-        <feDisplacementMap in="dilated" in2="edgeNoise" scale="1.8"
-          xChannelSelector="R" yChannelSelector="G" result="roughEdge"/>
-
-        <!-- Isolate only the bleeding edge pixels (displaced area outside original letterform) -->
-        <feComposite in="roughEdge" in2="SourceGraphic" operator="out" result="bleedPixels"/>
-
-        <!-- Make bleed pixels 50% opacity — ink bleeding softly into paper -->
-        <feComponentTransfer in="bleedPixels" result="semiBleed">
-          <feFuncA type="linear" slope="0.5"/>
-        </feComponentTransfer>
-
-        <!-- Interior ink texture clipped to original letterform -->
-        <feTurbulence type="fractalNoise" baseFrequency="0.6" numOctaves="3" seed="9" stitchTiles="stitch" result="fillNoise"/>
-        <feColorMatrix in="fillNoise" type="saturate" values="0" result="gray"/>
-        <feComponentTransfer in="gray" result="lifted">
-          <feFuncR type="linear" slope="0.3" intercept="0.04"/>
-          <feFuncG type="linear" slope="0.3" intercept="0.04"/>
-          <feFuncB type="linear" slope="0.3" intercept="0.04"/>
-        </feComponentTransfer>
-        <feComposite in="lifted" in2="SourceGraphic" operator="in" result="maskedFill"/>
-        <feBlend in="SourceGraphic" in2="maskedFill" mode="lighten" result="texturedInk"/>
-
-        <!-- Composite: sharp textured ink on top, soft bleed surrounding it -->
-        <feComposite in="texturedInk" in2="semiBleed" operator="over"/>
-
-      </filter>
-    </defs>
-  </svg>
 
 
   <header class="header">
